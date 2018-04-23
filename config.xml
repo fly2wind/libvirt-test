@@ -1,0 +1,136 @@
+<node> 
+  <cpu> 
+    <arch>x86_64</arch>  
+    <model>SandyBridge</model>  
+    <vendor>Intel</vendor>  
+    <topology sockets="4" cores="16" threads="2"/>  
+    <feature name="invpcid"/>  
+    <feature name="erms"/>  
+    <feature name="bmi2"/>  
+    <feature name="smep"/>  
+    <feature name="avx2"/>  
+    <feature name="bmi1"/>  
+    <feature name="fsgsbase"/>  
+    <feature name="movbe"/>  
+    <feature name="pcid"/>  
+    <feature name="fma"/> 
+  </cpu>   
+  <device> 
+    <name>computer</name>  
+    <capability type="system"> 
+      <product>2241B36</product>  
+      <hardware> 
+        <vendor>LENOVO</vendor>  
+        <version>ThinkPad T500</version>  
+        <serial>R89055N</serial>  
+        <uuid>c9488981-5049-11cb-9c1c-993d0230b4cd</uuid> 
+      </hardware>  
+      <firmware> 
+        <vendor>LENOVO</vendor>  
+        <version>6FET82WW (3.12 )</version>  
+        <release_date>11/26/2009</release_date> 
+      </firmware> 
+    </capability> 
+  </device>  
+  <device> 
+    <name>net_eth1_00_27_13_6a_fe_00</name>  
+    <parent>pci_0000_00_19_0</parent>  
+    <capability type="net"> 
+      <interface>eth1</interface>  
+      <address>00:27:13:6a:fe:00</address>  
+      <capability type="80203"/> 
+    </capability> 
+  </device>  
+  <device> 
+    <name>pci_0000_02_00_0</name>  
+    <path>/sys/devices/pci0000:00/0000:00:04.0/0000:02:00.0</path>  
+    <parent>pci_0000_00_04_0</parent>  
+    <driver> 
+      <name>igb</name> 
+    </driver>  
+    <capability type="pci"> 
+      <domain>0</domain>  
+      <bus>2</bus>  
+      <slot>0</slot>  
+      <function>0</function>  
+      <product id="0x10c9">82576 Gigabit Network Connection</product>  
+      <vendor id="0x8086">Intel Corporation</vendor>  
+      <capability type="virt_functions"> 
+        <address domain="0x0000" bus="0x02" slot="0x10" function="0x0"/>  
+        <address domain="0x0000" bus="0x02" slot="0x10" function="0x2"/>  
+        <address domain="0x0000" bus="0x02" slot="0x10" function="0x4"/>  
+        <address domain="0x0000" bus="0x02" slot="0x10" function="0x6"/>  
+        <address domain="0x0000" bus="0x02" slot="0x11" function="0x0"/>  
+        <address domain="0x0000" bus="0x02" slot="0x11" function="0x2"/>  
+        <address domain="0x0000" bus="0x02" slot="0x11" function="0x4"/> 
+      </capability>  
+      <iommuGroup number="12"> 
+        <address domain="0x0000" bus="0x02" slot="0x00" function="0x0"/>  
+        <address domain="0x0000" bus="0x02" slot="0x00" function="0x1"/> 
+      </iommuGroup>  
+      <pci-express> 
+        <link validity="cap" port="1" speed="2.5" width="1"/>  
+        <link validity="sta" speed="2.5" width="1"/> 
+      </pci-express> 
+    </capability> 
+  </device> 
+  <domain type="kvm"> 
+    <name>vm01</name>  
+    <uuid>c7a5fdbd-edaf-9455-926a-d65c16db1809</uuid>  
+    <memory unit="KiB">219100</memory>  
+    <currentMemory unit="KiB">219100</currentMemory>  
+    <vcpu placement="static" cpuset="1-4,8-20,525">1</vcpu>  
+    <os> 
+      <type arch="i686" machine="pc">hvm</type>  
+      <boot dev="hd"/> 
+    </os>  
+    <cpu mode="host-model"> 
+      <model fallback="allow"/>  
+      <feature policy="require" name="abm"/>  
+      <feature policy="force" name="ds"/>  
+      <feature policy="disable" name="invtsc"/> 
+    </cpu>  
+    <clock offset="utc"/>  
+    <on_poweroff>destroy</on_poweroff>  
+    <on_reboot>restart</on_reboot>  
+    <on_crash>destroy</on_crash>  
+    <devices> 
+      <emulator>/usr/bin/qemu-system-i686</emulator>  
+      <controller type="usb" index="0"/>  
+      <controller type="ide" index="0"/>  
+      <controller type="pci" index="0" model="pci-root"/>  
+      <input type="mouse" bus="ps2"/>  
+      <input type="keyboard" bus="ps2"/>  
+      <memballoon model="virtio"/> 
+    </devices> 
+  </domain> 
+  <network> 
+    <name>default</name>  
+    <uuid>dd8fe884-6c02-601e-7551-cca97df1c5df</uuid>  
+    <bridge name="virbr0"/>  
+    <forward/>  
+    <ip address="192.168.122.1" netmask="255.255.255.0"> 
+      <dhcp> 
+        <range start="192.168.122.2" end="192.168.122.254"/> 
+      </dhcp> 
+    </ip> 
+  </network>  
+  <interface type="ethernet" name="eth1"> 
+    <start mode="onboot"/>  
+    <mac address="aa:bb:cc:dd:ee:ff"/>  
+    <mtu size="1492"/>  
+    <protocol family="ipv4"> 
+      <ip address="192.168.0.5" prefix="24"/>  
+      <route gateway="192.168.0.1"/> 
+    </protocol> 
+  </interface>  
+  <pool type="scsi"> 
+    <name>vhba_pool</name>  
+    <source>" 
+      <adapter type="fc_host" parent="scsi_host1" wwnn="20000000c9831b4b" wwpn="10000000c9831b4b"/> 
+    </source>  
+    <target> 
+      <path>/dev/disk/by-path</path> 
+    </target> 
+  </pool>  
+</node>
